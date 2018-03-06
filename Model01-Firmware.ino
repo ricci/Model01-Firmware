@@ -47,6 +47,9 @@
 // Support for an LED mode that lights up the keys as you press them
 #include "Kaleidoscope-LED-Stalker.h"
 
+// Support for an LED heatmap
+#include "Kaleidoscope-Heatmap.h"
+
 // Support for an LED mode that prints the keys you press in letters 4px high
 //#include "Kaleidoscope-LED-AlphaSquare.h"
 
@@ -137,10 +140,9 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
    Key_PrintScreen, Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
    Key_Enter,     Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
                   Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
-   M(MACRO_LOZENGE), Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+   LALT(LSHIFT(Key_V)), Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
    Key_RightShift, Key_LeftAlt, Key_Spacebar, Key_RightControl,
    ShiftToLayer(FUNCTION)),
-
 
   [NUMPAD] =  KEYMAP_STACKED
   (___, ___, ___, ___, ___, ___, ___,
@@ -288,6 +290,8 @@ void setup() {
 
     // The stalker effect lights up the keys you've pressed recently
     &StalkerEffect,
+
+    &HeatmapEffect,
 
     // The numpad plugin is responsible for lighting up the 'numpad' mode
     // with a custom LED effect

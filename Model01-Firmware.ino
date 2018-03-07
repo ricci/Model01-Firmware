@@ -35,12 +35,6 @@
 // when the keyboard is connected to a computer (or that computer is powered on)
 #include "Kaleidoscope-LEDEffect-BootGreeting.h"
 
-// Support for an LED mode that makes all the LEDs 'breathe'
-//#include "Kaleidoscope-LEDEffect-Breathe.h"
-
-// Support for an LED mode that makes a red pixel chase a blue pixel across the keyboard
-//#include "Kaleidoscope-LEDEffect-Chase.h"
-
 // Support for LED modes that pulse the keyboard's LED in a rainbow pattern
 #include "Kaleidoscope-LEDEffect-Rainbow.h"
 
@@ -49,9 +43,6 @@
 
 // Support for an LED heatmap
 #include "Kaleidoscope-Heatmap.h"
-
-// Support for an LED mode that prints the keys you press in letters 4px high
-//#include "Kaleidoscope-LED-AlphaSquare.h"
 
 // Support for Keyboardio's internal keyboard testing mode
 #include "Kaleidoscope-Model01-TestMode.h"
@@ -72,9 +63,7 @@
   * a macro key is pressed.
   */
 
-enum { MACRO_VERSION_INFO,
-       MACRO_LOZENGE
-     };
+enum { MACRO_VERSION_INFO };
 
 
 
@@ -210,9 +199,6 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     versionInfoMacro(keyState);
     break;
 
-  case MACRO_LOZENGE:
-    return MACRODOWN(D(LeftAlt), D(LeftShift), T(V));
-    break;
   }
   return MACRO_NONE;
 }
@@ -277,17 +263,6 @@ void setup() {
     // and slowly moves the rainbow across your keyboard
     &LEDRainbowWaveEffect,
 
-    // The chase effect follows the adventure of a blue pixel which chases a red pixel across
-    // your keyboard. Spoiler: the blue pixel never catches the red pixel
-    //&LEDChaseEffect,
-
-    // The breathe effect slowly pulses all of the LEDs on your keyboard
-    //&LEDBreatheEffect,
-
-    // The AlphaSquare effect prints each character you type, using your
-    // keyboard's LEDs as a display
-    //&AlphaSquareEffect,
-
     // The stalker effect lights up the keys you've pressed recently
     &StalkerEffect,
 
@@ -312,9 +287,6 @@ void setup() {
   // needs to be explicitly told which keymap layer is your numpad layer
   NumPad.numPadLayer = NUMPAD;
 
-  // We configure the AlphaSquare effect to use RED letters
-  //AlphaSquare.color = { 255, 0, 0 };
-
   // We set the brightness of the rainbow effects to 150 (on a scale of 0-255)
   // This draws more than 500mA, but looks much nicer than a dimmer effect
   LEDRainbowEffect.brightness(150);
@@ -327,11 +299,6 @@ void setup() {
 
   // We want the keyboard to be able to wake the host up from suspend.
   HostPowerManagement.enableWakeup();
-
-  // We want to make sure that the firmware starts with LED effects off
-  // This avoids over-taxing devices that don't have a lot of power to share
-  // with USB devices
-  //LEDOff.activate();
 
   // I like this one better
   StalkerEffect.activate();

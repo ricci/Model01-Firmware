@@ -44,9 +44,6 @@
 // Support for an LED heatmap
 #include "Kaleidoscope-Heatmap.h"
 
-// Support for Keyboardio's internal keyboard testing mode
-#include "Kaleidoscope-Model01-TestMode.h"
-
 // Support for host power management (suspend & wakeup)
 #include "Kaleidoscope-HostPowerManagement.h"
 
@@ -245,9 +242,6 @@ void setup() {
   Kaleidoscope.use(
     // The boot greeting effect pulses the LED button for 10 seconds after the keyboard is first connected
     &BootGreetingEffect,
-
-    // The hardware test mode, which can be invoked by tapping Prog, LED and the left Fn button at the same time.
-    &TestMode,
 
     // LEDControl provides support for other LED modes
     &LEDControl,

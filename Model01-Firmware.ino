@@ -291,11 +291,15 @@ void setup() {
   // see https://github.com/keyboardio/Kaleidoscope-LED-Stalker
   StalkerEffect.variant = STALKER(BlazingTrail);
 
+  // Adjust how often the Heatmap updates (delay in ms)
+  HeatmapEffect.update_delay = 250;
+  HeatmapEffect.clear_on_saturation = true;
+
   // We want the keyboard to be able to wake the host up from suspend.
   HostPowerManagement.enableWakeup();
 
   // I like this one better
-  StalkerEffect.activate();
+  HeatmapEffect.activate();
 }
 
 /** loop is the second of the standard Arduino sketch functions.

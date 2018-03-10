@@ -292,8 +292,10 @@ void setup() {
   StalkerEffect.variant = STALKER(BlazingTrail);
 
   // Adjust how often the Heatmap updates (delay in ms)
-  HeatmapEffect.update_delay = 250;
-  HeatmapEffect.clear_on_saturation = true;
+  //HeatmapEffect.update_delay = 250;
+  //HeatmapEffect.clear_on_saturation = true;
+  //HeatmapEffect.key_saturation = 50;
+  HeatmapEffect.log_scale = true;
 
   // We want the keyboard to be able to wake the host up from suspend.
   HostPowerManagement.enableWakeup();

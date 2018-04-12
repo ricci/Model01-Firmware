@@ -28,18 +28,9 @@
 // Support for "Numpad" mode, which is mostly just the Numpad specific LED mode
 #include "Kaleidoscope-NumPad.h"
 
-// Support for an "LED off mode"
-#include "LED-Off.h"
-
 // Support for the "Boot greeting" effect, which pulses the 'LED' button for 10s
 // when the keyboard is connected to a computer (or that computer is powered on)
 #include "Kaleidoscope-LEDEffect-BootGreeting.h"
-
-// Support for LED modes that pulse the keyboard's LED in a rainbow pattern
-#include "Kaleidoscope-LEDEffect-Rainbow.h"
-
-// Support for an LED mode that lights up the keys as you press them
-#include "Kaleidoscope-LED-Stalker.h"
 
 // Support for an LED heatmap
 #include "Kaleidoscope-Heatmap.h"
@@ -119,7 +110,7 @@ enum { QWERTY, NUMPAD, FUNCTION }; // layers
 KEYMAPS(
 
   [QWERTY] = KEYMAP_STACKED
-  (___,          Key_1, Key_2, Key_3, Key_4, Key_5, Key_LEDEffectNext,
+  (___,          Key_1, Key_2, Key_3, Key_4, Key_5, LCTRL(LSHIFT(Key_U)),
    Key_Backtick, Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
    Key_PageUp,   Key_A, Key_S, Key_D, Key_F, Key_G,
    Key_PageDown, Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
@@ -249,20 +240,6 @@ void setup() {
     // LEDControl provides support for other LED modes
     &LEDControl,
 
-    // We start with the LED effect that turns off all the LEDs.
-    &LEDOff,
-
-    // The rainbow effect changes the color of all of the keyboard's keys at the same time
-    // running through all the colors of the rainbow.
-    //&LEDRainbowEffect,
-
-    // The rainbow wave effect lights up your keyboard with all the colors of a rainbow
-    // and slowly moves the rainbow across your keyboard
-    &LEDRainbowWaveEffect,
-
-    // The stalker effect lights up the keys you've pressed recently
-    &StalkerEffect,
-
     &HeatmapEffect,
 
     &SpaceCadet,
@@ -285,16 +262,6 @@ void setup() {
   // While we hope to improve this in the future, the NumPad plugin
   // needs to be explicitly told which keymap layer is your numpad layer
   NumPad.numPadLayer = NUMPAD;
-
-  // We set the brightness of the rainbow effects to 150 (on a scale of 0-255)
-  // This draws more than 500mA, but looks much nicer than a dimmer effect
-  LEDRainbowEffect.brightness(150);
-  LEDRainbowWaveEffect.brightness(150);
-
-  // The LED Stalker mode has a few effects. The one we like is
-  // called 'BlazingTrail'. For details on other options,
-  // see https://github.com/keyboardio/Kaleidoscope-LED-Stalker
-  StalkerEffect.variant = STALKER(BlazingTrail);
 
   // Adjust how often the Heatmap updates (delay in ms)
   //HeatmapEffect.update_delay = 250;

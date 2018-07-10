@@ -38,8 +38,15 @@
 // Support for host power management (suspend & wakeup)
 #include "Kaleidoscope-HostPowerManagement.h"
 
+#include "Kaleidoscope-SpaceCadet.h"
+
+// Support for magic combos (key chrods that trigger an action)
+#include "Kaleidoscope-MagicCombo.h"
 // Make it easier to type parens for Racket
 #include "Kaleidoscope-SpaceCadet.h"
+
+// Support for USB quirks, like changing the key state report protocol
+#include "Kaleidoscope-USB-Quirks.h"
 
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
   * The names aren't particularly important. What is important is that each
@@ -221,44 +228,89 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
-/** The 'setup' function is one of the two standard Arduino sketch functions.
-  * It's called when your keyboard first powers up. This is where you set up
-  * Kaleidoscope and any plugins.
-  */
+/** This 'enum' is a list of all the magic combos used by the Model 01's
+ * firmware The names aren't particularly important. What is important is that
+ * each is unique.
+ *
+ * These are the names of your magic combos. They will be used by the
+ * `USE_MAGIC_COMBOS` call below.
+ */
+enum {
+  // Toggle between Boot (6-key rollover; for BIOSes and early boot) and NKRO
+  // mode.
+  COMBO_TOGGLE_NKRO_MODE
+};
 
+/** A tiny wrapper, to be used by MagicCombo.
+ * This simply toggles the keyboard protocol via USBQuirks, and wraps it within
+ * a function with an unused argument, to match what MagicCombo expects.
+ */
+static void toggleKeyboardProtocol(uint8_t combo_index) {
+  USBQuirks.toggleKeyboardProtocol();
+}
+
+/** Magic combo list, a list of key combo and action pairs the firmware should
+ * recognise.
+ */
+USE_MAGIC_COMBOS({.action = toggleKeyboardProtocol,
+                  // Left Fn + Esc + Shift
+                  .keys = { R3C6, R2C6, R3C7 }
+                 });
+
+// First, tell Kaleidoscope which plugins you want to use.
+// The order can be important. For example, LED effects are
+// added in the order they're listed here.
+KALEIDOSCOPE_INIT_PLUGINS(
+  // The boot greeting effect pulses the LED button for 10 seconds after the keyboard is first connected
+  BootGreetingEffect,
+
+  // LEDControl provides support for other LED modes
+  LEDControl,
+  
+  HeatmapEffect,
+
+  SpaceCadet,
+  // The rainbow effect changes the color of all of the keyboard's keys at the same time
+  // running through all the colors of the rainbow.
+  LEDRainbowEffect,
+
+  // The rainbow wave effect lights up your keyboard with all the colors of a rainbow
+  // and slowly moves the rainbow across your keyboard
+  LEDRainbowWaveEffect,
+
+  // These static effects turn your keyboard's LEDs a variety of colors
+  solidRed, solidOrange, solidYellow, solidGreen, solidBlue, solidIndigo, solidViolet,
+
+  // The breathe effect slowly pulses all of the LEDs on your keyboard
+  LEDBreatheEffect,
+
+  // The stalker effect lights up the keys you've pressed recently
+  StalkerEffect,
+
+  // The macros plugin adds support for macros
+  Macros,
+
+  // The HostPowerManagement plugin enables waking up the host from suspend,
+  // and allows us to turn LEDs off when it goes to sleep.
+  HostPowerManagement,
+  
+  );
+
+  // The MagicCombo plugin lets you use key combinations to trigger custom
+  // actions - a bit like Macros, but triggered by pressing multiple keys at the
+  // same time.
+  MagicCombo,
+
+  // The USBQuirks plugin lets you do some things with USB that we aren't
+  // comfortable - or able - to do automatically, but can be useful
+  // nevertheless. Such as toggling the key report protocol between Boot (used
+  // by BIOSes) and Report (NKRO).
+  USBQuirks
+);
 void setup() {
   // First, call Kaleidoscope's internal setup function
   Kaleidoscope.setup();
 
-  // Next, tell Kaleidoscope which plugins you want to use.
-  // The order can be important. For example, LED effects are
-  // added in the order they're listed here.
-  Kaleidoscope.use(
-    // The boot greeting effect pulses the LED button for 10 seconds after the keyboard is first connected
-    &BootGreetingEffect,
-
-    // LEDControl provides support for other LED modes
-    &LEDControl,
-
-    &HeatmapEffect,
-
-    &SpaceCadet,
-
-    // The numpad plugin is responsible for lighting up the 'numpad' mode
-    // with a custom LED effect
-    &NumPad,
-
-    // The macros plugin adds support for macros
-    &Macros,
-
-    // The MouseKeys plugin lets you add keys to your keymap which move the mouse.
-    &MouseKeys,
-
-    // The HostPowerManagement plugin enables waking up the host from suspend,
-    // and allows us to turn LEDs off when it goes to sleep.
-    &HostPowerManagement
-  );
-  
   // While we hope to improve this in the future, the NumPad plugin
   // needs to be explicitly told which keymap layer is your numpad layer
   NumPad.numPadLayer = NUMPAD;
@@ -269,6 +321,15 @@ void setup() {
   //HeatmapEffect.key_saturation = 50;
   HeatmapEffect.log_scale = true;
 
+  // We set the brightness of the rainbow effects to 150 (on a scale of 0-255)
+  // This draws more than 500mA, but looks much nicer than a dimmer effect
+  LEDRainbowEffect.brightness(150);
+  LEDRainbowWaveEffect.brightness(150);
+
+  // We want to make sure that the firmware starts with LED effects off
+  // This avoids over-taxing devices that don't have a lot of power to share
+  // with USB devices
+  LEDOff.activate();
   // We want the keyboard to be able to wake the host up from suspend.
   HostPowerManagement.enableWakeup();
 

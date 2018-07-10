@@ -38,8 +38,6 @@
 // Support for host power management (suspend & wakeup)
 #include "Kaleidoscope-HostPowerManagement.h"
 
-#include "Kaleidoscope-SpaceCadet.h"
-
 // Support for magic combos (key chrods that trigger an action)
 #include "Kaleidoscope-MagicCombo.h"
 

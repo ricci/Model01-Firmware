@@ -297,6 +297,22 @@ void setup() {
   // needs to be explicitly told which keymap layer is your numpad layer
   NumPad.numPadLayer = NUMPAD;
 
+  //Setting is {KeyThatWasPressed, AlternativeKeyToSend, TimeoutInMS}
+  //Note: must end with the SPACECADET_MAP_END delimiter
+  static kaleidoscope::SpaceCadet::KeyBinding spacecadetmap[] = {
+    {Key_LeftShift, Key_LeftParen, 0}
+    , {Key_RightShift, Key_RightParen, 0}
+    , {Key_LeftGui, Key_LeftCurlyBracket, 0}
+    , {Key_RightAlt, Key_RightCurlyBracket, 0}
+    , {Key_LeftAlt, Key_RightCurlyBracket, 0}
+    , {Key_LeftControl, Key_LeftBracket, 0}
+    , {Key_RightControl, Key_RightBracket, 0}
+    , SPACECADET_MAP_END
+  };
+  //Set the map.
+  SpaceCadet.map = spacecadetmap;
+
+
   // Adjust how often the Heatmap updates (delay in ms)
   //HeatmapEffect.update_delay = 250;
   //HeatmapEffect.clear_on_saturation = true;

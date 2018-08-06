@@ -299,7 +299,7 @@ void setup() {
 
   //Setting is {KeyThatWasPressed, AlternativeKeyToSend, TimeoutInMS}
   //Note: must end with the SPACECADET_MAP_END delimiter
-  static kaleidoscope::SpaceCadet::KeyBinding spacecadetmap[] = {
+/*  static kaleidoscope::SpaceCadet::KeyBinding spacecadetmap[] = {
     {Key_LeftShift, Key_LeftParen, 0}
     , {Key_RightShift, Key_RightParen, 0}
     , {Key_LeftGui, Key_LeftCurlyBracket, 0}
@@ -310,7 +310,7 @@ void setup() {
     , SPACECADET_MAP_END
   };
   //Set the map.
-  SpaceCadet.map = spacecadetmap;
+  SpaceCadet.map = spacecadetmap;*/
 
 
   // Adjust how often the Heatmap updates (delay in ms)

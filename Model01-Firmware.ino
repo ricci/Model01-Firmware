@@ -317,7 +317,7 @@ void setup() {
   //HeatmapEffect.update_delay = 250;
   //HeatmapEffect.clear_on_saturation = true;
   //HeatmapEffect.key_saturation = 50;
-  //HeatmapEffect.log_scale = true;
+  HeatmapEffect.log_scale = true;
 
   // I like this one better
   HeatmapEffect.activate();

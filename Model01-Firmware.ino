@@ -376,13 +376,6 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // keyboard is first connected
   BootGreetingEffect,
 
-<<<<<<< HEAD
-=======
-  // The hardware test mode, which can be invoked by tapping Prog, LED and the
-  // left Fn button at the same time.
-  TestMode,
-
->>>>>>> upstream/master
   // LEDControl provides support for other LED modes
   LEDControl,
   
